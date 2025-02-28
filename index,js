@@ -1,0 +1,38 @@
+window.addEventListener( 'scroll', function () {
+		let descriptions = document.querySelectorAll(
+			'.ea-expand .sp-easy-accordion-item-content'
+		);
+
+		descriptions.forEach( ( description ) => {
+			let descriptionRect = description.getBoundingClientRect();
+			let button = description.querySelector(
+				'.sp-easy-accordion-inside-close'
+			);
+			console.log(descriptionRect.right);
+
+			let title = description.previousElementSibling;
+			if ( title ) {
+				let titleRect = title.getBoundingClientRect();
+
+				// Check if the title is too close to the top of the viewport
+				if ( titleRect.top >= 50 ) {
+					button.style.display = 'none';
+				} else {
+					button.style.display = 'block';
+				}
+			}
+
+			// Check if the description is within the viewport
+			if ( descriptionRect.bottom >= 0 && descriptionRect.top <= window.innerHeight ) {
+				// If description's bottom is still in viewport, keep button static
+				if ( descriptionRect.bottom >= window.innerHeight ) {
+					button.classList.add( 'fixed-button' );
+				} else {
+					button.classList.remove( 'fixed-button' );
+				}
+			} else {
+				// If description is out of the viewport, remove the fixed class
+				button.classList.remove( 'fixed-button' );
+			}
+		} );
+	} );
